@@ -4,8 +4,8 @@ type bookListItemParams = {
   book: Book,
 }
 
-const bookListItem = ({book}: bookListItemParams) => {
-  return [book.ASIN, book.title, book.author, book.publishYear, book.language, book.pages];
+const bookListItem = ({book}: bookListItemParams): string[] => {
+  return [book.ASIN, book.title, book.author, book.publishYear.toString(), book.language, book.pages.toString()];
 };
 
 export default bookListItem;

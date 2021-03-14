@@ -1,4 +1,3 @@
-import render from "../helpers/render";
 import {terminal} from 'terminal-kit';
 import User from "../models/User";
 import userListItem from "./userListItem";
@@ -12,7 +11,7 @@ const userList = async ({users}: userListParams) => {
   const rows = [header];
 
   for (const user of users) {
-    rows.push(await render(userListItem, {user}));
+    rows.push(await userListItem({user}));
   }
 
   terminal.table(rows, {

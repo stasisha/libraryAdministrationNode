@@ -1,4 +1,3 @@
-import render from "../helpers/render";
 import {terminal} from 'terminal-kit';
 import bookListItem from "./bookListItem";
 import Book from "../models/Book";
@@ -12,7 +11,7 @@ const bookList = async ({books}: bookListParams) => {
   const rows = [header];
 
   for (const book of books) {
-    rows.push(await render(bookListItem, {book}));
+    rows.push(await bookListItem({book}));
   }
 
   terminal.table(rows, {
