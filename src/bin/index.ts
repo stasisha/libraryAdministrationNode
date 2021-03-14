@@ -2,6 +2,7 @@
 import MainController from "../controllers/MainController";
 import BookRepository from "../repository/BookRepository";
 import UserRepository from "../repository/UserRepository";
+import ViewService from "../services/viewService";
 
 // Варіант 2. Адміністратор архіву бібліотеки.
 // Функціонал: внесення інформації про нові надходження до бібліотеки
@@ -10,6 +11,7 @@ import UserRepository from "../repository/UserRepository";
 
 const bookRepository = new BookRepository();
 const userRepository = new UserRepository();
-const controller = new MainController(bookRepository, userRepository);
+const view = new ViewService();
+const controller = new MainController(view, bookRepository, userRepository);
 
 controller.menu();

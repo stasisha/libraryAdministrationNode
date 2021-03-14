@@ -4,19 +4,21 @@ import addBookForm from '../views/addBookForm';
 import selectBookForm from '../views/selectBookForm';
 import addUserForm from '../views/addUserForm';
 import menu from '../views/menu';
-import render from '../helpers/render';
 import BookRepository from "../repository/BookRepository";
 import UserRepository from "../repository/UserRepository";
 import User from "../models/User";
 import selectUserForm from "../views/selectUserForm";
 import userList from "../views/userList";
+import ViewService from "../services/viewService";
 
 export default class MainController {
 
+  view: ViewService;
   bookRepository: BookRepository;
   userRepository: UserRepository;
 
-  constructor(bookRepository: BookRepository, userRepository: UserRepository) {
+  constructor(view: ViewService, bookRepository: BookRepository, userRepository: UserRepository) {
+    this.view = view;
     this.bookRepository = bookRepository;
     this.userRepository = userRepository;
   }
@@ -70,34 +72,34 @@ export default class MainController {
           await this.menu();
       }
     };
-    await render(menu, {items, menuCallback});
+    await this.view.render(menu, {items, menuCallback});
   };
 
   async bookList() {
     const books = await this.bookRepository.findBy({});
-    await render(bookList, {books});
+    await this.view.render(bookList, {books});
   }
 
   async userList() {
     const users = await this.userRepository.findBy({});
-    await render(userList, {users});
+    await this.view.render(userList, {users});
   }
 
   async addBookForm() {
     const book = new Book();
-    await render(addBookForm, {book});
+    await this.view.render(addBookForm, {book});
     await this.bookRepository.save(book);
   }
 
 
   async addUserForm() {
     const user = new User();
-    await render(addUserForm, {user});
+    await this.view.render(addUserForm, {user});
     await this.userRepository.save(user);
   }
 
   async deleteBook() {
-    await render(selectBookForm, {
+    await this.view.render(selectBookForm, {
       callback: (id) => {
         this.bookRepository.delete({id});
       }
@@ -106,13 +108,13 @@ export default class MainController {
 
   async addBookToUser() {
     let bookId: number;
-    await render(selectBookForm, {
+    await this.view.render(selectBookForm, {
       callback: async (id) => {
         bookId = id;
       }
     });
     let userId: number;
-    await render(selectUserForm, {
+    await this.view.render(selectUserForm, {
       callback: (id) => {
         userId = id;
       }
