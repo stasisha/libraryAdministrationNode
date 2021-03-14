@@ -10,18 +10,21 @@ import User from "../models/User";
 import selectUserForm from "../views/selectUserForm";
 import userList from "../views/userList";
 import ViewService from "../services/viewService";
+import LogService from "../services/logService";
 
 export default class MainController {
 
   view: ViewService;
+  logger: LogService;
   bookRepository: BookRepository;
   userRepository: UserRepository;
 
-  constructor(view: ViewService, bookRepository: BookRepository, userRepository: UserRepository) {
+  constructor(view: ViewService, logger: LogService, bookRepository: BookRepository, userRepository: UserRepository) {
     this.view = view;
+    this.logger = logger;
     this.bookRepository = bookRepository;
     this.userRepository = userRepository;
-  }
+  };
 
   menu = async () => {
     const items = [
@@ -66,6 +69,7 @@ export default class MainController {
           await this.menu();
           break;
         case 8:
+          this.logger.log('Application terminated');
           process.exit();
           break;
         default:
@@ -76,11 +80,13 @@ export default class MainController {
   };
 
   async bookList() {
+    this.logger.log('Book list');
     const books = await this.bookRepository.findBy({});
     await this.view.render(bookList, {books});
   }
 
   async userList() {
+    this.logger.log('User list');
     const users = await this.userRepository.findBy({});
     await this.view.render(userList, {users});
   }
@@ -88,20 +94,32 @@ export default class MainController {
   async addBookForm() {
     const book = new Book();
     await this.view.render(addBookForm, {book});
-    await this.bookRepository.save(book);
+    const bookAddResult = await this.bookRepository.save(book);
+    if (!bookAddResult) {
+      throw new Error('Book was not added');
+    }
+    this.logger.log('Book added', {book});
   }
 
 
   async addUserForm() {
     const user = new User();
     await this.view.render(addUserForm, {user});
-    await this.userRepository.save(user);
+    const userAddResult = await this.userRepository.save(user);
+    if (!userAddResult) {
+      throw new Error('User was not added');
+    }
+    this.logger.log('User added', {user});
   }
 
   async deleteBook() {
     await this.view.render(selectBookForm, {
       callback: (id) => {
-        this.bookRepository.delete({id});
+        const deleteResult = this.bookRepository.delete({id});
+        if (!deleteResult) {
+          throw new Error(`Impossible delete book with id ${id}`);
+        }
+        this.logger.log('Book deleted', {id});
       }
     });
   }
@@ -121,9 +139,19 @@ export default class MainController {
     });
 
     const user = this.userRepository.findOneBy({'id': userId});
+    if (!user) {
+      throw new Error('User not found. User id: ' + userId);
+    }
     const book = this.bookRepository.findOneBy({'id': bookId});
+    if (!book) {
+      throw new Error('Book not found. ASIN :' + bookId);
+    }
     user.books.push(book);
-    this.userRepository.save(user);
+    const saveResult = this.userRepository.save(user);
+    if (!saveResult) {
+      throw new Error(`Book was not added to user. userId: ${userId}. Book ASIN: ${bookId}`);
+    }
+    this.logger.log('Book added to user', {user, book});
   }
 
 }
