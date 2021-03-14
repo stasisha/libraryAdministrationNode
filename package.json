@@ -2,9 +2,9 @@
   "name": "library-administration",
   "version": "1.0.0",
   "description": "",
-  "main": "../konstruyuvannyaPzNode copy/dist/bin/index.js",
+  "main": "dist/bin/index.js",
   "bin": {
-    "library-administration": "../konstruyuvannyaPzNode copy/dist/bin/index.js"
+    "library-administration": "dist/bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
