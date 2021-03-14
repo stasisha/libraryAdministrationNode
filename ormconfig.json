@@ -1,0 +1,12 @@
+{
+  "type": "sqlite",
+  "database": "storage/db.sqlite",
+  "migrationsTableName": "custom_migration_table",
+  "migrations": [
+    "dist/migration/*.js"
+  ],
+  "cli": {
+    "migrationsDir": "src/migration"
+  },
+  "entities": ["dist/models/*.js"]
+}

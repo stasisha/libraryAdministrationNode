@@ -5,7 +5,7 @@ type deleteBookForm = {
 };
 
 const selectBookForm = async ({callback}: deleteBookForm) => {
-  terminal('Enter book ID:');
+  terminal('Enter book ASIN:');
   const id = await terminal.inputField().promise;
   callback(id);
   terminal('\n');

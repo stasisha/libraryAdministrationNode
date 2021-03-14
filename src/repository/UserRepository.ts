@@ -1,26 +1,27 @@
 import User from "../models/User";
+import {Connection, Repository} from "typeorm";
 
 export default class UserRepository {
+  repo: Repository<User>;
 
-  findBy(condition: object) {
-    const user = new User();
-    user.books = [];
-    return [
-      user,
-    ];
+  constructor(db: Connection) {
+    this.repo = db.getRepository<User>(User);
   }
 
-  findOneBy(condition: object): User {
-    const user = new User();
-    user.books = [];
-    return user;
+  async findBy(condition: object = {}) {
+    return await this.repo.find({...condition, relations: ["books"]});
   }
 
-  delete(condition: object): boolean {
-    return true;
+  async findOneBy(condition: object = {}) {
+    return await this.repo.findOne(condition, {relations: ["books"]});
   }
 
-  save(user: User): boolean {
-    return true;
+  async delete(condition: object) {
+    const user = await this.findOneBy(condition);
+    return await this.repo.remove(user);
+  }
+
+  async save(user: User) {
+    return await this.repo.save(user);
   }
 }

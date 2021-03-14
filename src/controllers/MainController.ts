@@ -114,12 +114,12 @@ export default class MainController {
 
   async deleteBook() {
     await this.view.render(selectBookForm, {
-      callback: (id) => {
-        const deleteResult = this.bookRepository.delete({id});
+      callback: (ASIN) => {
+        const deleteResult = this.bookRepository.delete({ASIN});
         if (!deleteResult) {
-          throw new Error(`Impossible delete book with id ${id}`);
+          throw new Error(`Impossible delete book with id ${ASIN}`);
         }
-        this.logger.log('Book deleted', {id});
+        this.logger.log('Book deleted', {ASIN});
       }
     });
   }
@@ -138,16 +138,19 @@ export default class MainController {
       }
     });
 
-    const user = this.userRepository.findOneBy({'id': userId});
+    const user = await this.userRepository.findOneBy({id: userId});
     if (!user) {
       throw new Error('User not found. User id: ' + userId);
     }
-    const book = this.bookRepository.findOneBy({'id': bookId});
+    const book = await this.bookRepository.findOneBy({ASIN: bookId});
     if (!book) {
       throw new Error('Book not found. ASIN :' + bookId);
     }
+    if (!user.books) {
+      user.books = [];
+    }
     user.books.push(book);
-    const saveResult = this.userRepository.save(user);
+    const saveResult = await this.userRepository.save(user);
     if (!saveResult) {
       throw new Error(`Book was not added to user. userId: ${userId}. Book ASIN: ${bookId}`);
     }
