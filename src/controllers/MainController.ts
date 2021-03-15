@@ -34,8 +34,7 @@ export default class MainController {
       '4. User list',
       '5. Add user',
       '6. Assign book to user',
-      '7. Add Book to User',
-      '8. Exit'
+      '7. Exit'
     ];
 
     const menuCallback = async (error, response) => {
@@ -65,10 +64,6 @@ export default class MainController {
           await this.menu();
           break;
         case 7:
-          await this.addBookToUser();
-          await this.menu();
-          break;
-        case 8:
           this.logger.log('Application terminated');
           process.exit();
           break;
