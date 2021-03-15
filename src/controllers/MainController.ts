@@ -11,6 +11,7 @@ import selectUserForm from "../views/selectUserForm";
 import userList from "../views/userList";
 import ViewService from "../services/viewService";
 import LogService from "../services/logService";
+import translate, {t} from "../services/TranslateService";
 
 export default class MainController {
 
@@ -28,13 +29,13 @@ export default class MainController {
 
   menu = async () => {
     const items = [
-      '1. Book list',
-      '2. Add book',
-      '3. Delete book',
-      '4. User list',
-      '5. Add user',
-      '6. Assign book to user',
-      '7. Exit'
+      `1. ${translate.t(t.bookList)}`,
+      `2. ${translate.t(t.addBook)}`,
+      `3. ${translate.t(t.deleteBook)}`,
+      `4. ${translate.t(t.userList)}`,
+      `5. ${translate.t(t.addUser)}`,
+      `6. ${translate.t(t.assignBookToUser)}`,
+      `7. ${translate.t(t.exit)}`
     ];
 
     const menuCallback = async (error, response) => {

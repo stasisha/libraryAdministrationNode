@@ -1,13 +1,14 @@
 import {terminal} from 'terminal-kit';
 import bookListItem from "./bookListItem";
 import Book from "../models/Book";
+import translate, {t} from "../services/TranslateService";
 
 type bookListParams = {
   books: Book[],
 }
 
 const bookList = async ({books}: bookListParams) => {
-  const header = ['ASIN', 'Title', 'Author', 'Publish Year', 'Language', 'Pages'];
+  const header = [translate.t(t.ASIN), translate.t(t.title), translate.t(t.author), translate.t(t.publishYear), translate.t(t.language), translate.t(t.pages)];
   const rows = [header];
 
   for (const book of books) {
