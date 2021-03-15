@@ -6,7 +6,6 @@ type menuParams = {
 }
 
 const menu = async ({items, menuCallback}: menuParams) => {
-  // term.fullscreen();
   await terminal.singleColumnMenu(items, menuCallback).promise;
 };
 

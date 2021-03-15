@@ -14,11 +14,6 @@ export default class User {
   @OneToMany(type => Book, book => book.user) // note: we will create author property in the Photo class below
   books: Book[];
 
-
-  // constructor() {
-  //   this.books = [];
-  // }
-
   static create(id: number, firstName: string, lastName: string, books: Book[]) {
     const user = new User();
     user.id = id;

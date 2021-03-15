@@ -8,8 +8,6 @@ import {createConnection} from "typeorm";
 
 // @ts-ignore
 import connectionConfig from '../ormconfig';
-import User from "../models/User";
-import Book from "../models/Book";
 
 // Варіант 2. Адміністратор архіву бібліотеки.
 // Функціонал: внесення інформації про нові надходження до бібліотеки
@@ -29,5 +27,5 @@ createConnection(connectionConfig).then(connection => {
   const view = new ViewService();
   logService.log('Application started');
   const controller = new MainController(view, logService, bookRepository, userRepository);
-  controller.menu();
+  controller.menu().then();
 }).catch(error => logService.error(error));
