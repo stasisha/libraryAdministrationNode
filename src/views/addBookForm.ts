@@ -1,5 +1,6 @@
 import {terminal as term} from 'terminal-kit';
 import Book from "../models/Book";
+import translate, {t} from "../services/TranslateService";
 
 type addBookParams = {
   book: Book,
@@ -7,25 +8,25 @@ type addBookParams = {
 
 const addBookForm = async ({book}: addBookParams) => {
 
-  term('\nASIN: ');
+  term(`\n${translate.t(t.ASIN)}: `);
   book.ASIN = await term.inputField().promise;
   term('\n');
 
-  term('Title: ');
+  term(`\n${translate.t(t.title)}: `);
   book.title = await term.inputField().promise;
 
-  term('\nAuthor: ');
+  term(`\n${translate.t(t.author)}: `);
   book.author = await term.inputField().promise;
 
-  term('\nYear: ');
+  term(`\n${translate.t(t.publishYear)}: `);
   book.publishYear = await term.inputField().promise;
   term('\n');
 
-  term('\nLanguage: ');
+  term(`\n${translate.t(t.language)}: `);
   book.language = await term.inputField().promise;
   term('\n');
 
-  term('\nPages: ');
+  term(`\n${translate.t(t.pages)}: `);
   book.pages = await term.inputField().promise;
   term('\n');
 };

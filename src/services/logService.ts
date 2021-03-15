@@ -11,12 +11,12 @@ export default class LogService {
   }
 
   log(action: string, data: object = {}) {
-    fs.writeFile(this.actionFile, 'Time: ' + Date.now().toString() + '. Action: : ' + action + '. Data: ' + JSON.stringify(data), () => {
+    fs.appendFile(this.actionFile, 'Time: ' + Date.now().toString() + '. Action: : ' + action + '. Data: ' + JSON.stringify(data) + '\n', () => {
     });
   }
 
   error(e: Error) {
-    fs.writeFile(this.errorFile, 'Time: ' + Date.now().toString() + '. Error: ' + e.message + '. Stack: ' + e.stack, () => {
+    fs.appendFile(this.errorFile, 'Time: ' + Date.now().toString() + '. Error: ' + e.message + '. Stack: ' + e.stack + '\n', () => {
     });
   }
 }
